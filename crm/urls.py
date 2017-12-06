@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^admin/',admin.site.urls),
     url(r'^login/', views.login),
     url(r'^index/',views.index),
+    url(r'^questionnaireEditor/',views.questionEditor),
+    url(r'^questionnaireAdd/',views.questionnaireAdd),
     url(r'^getvalicode/',views.getvalicode),
     # 滑动模块验证码URL
     url(r'^pc-geetest/register',pcgetcaptcha, name='pcgetcaptcha'),

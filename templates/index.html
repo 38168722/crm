@@ -1,10 +1,39 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <META http-equiv=Content-Type content="text/html; charset=gb2312">
-    <title>首页</title>
-</head>
-<body>
-<p>hello world</p>
-</body>
-</html>
+{% extends "models.html" %}
+
+{% block content-title %}
+   首页/数据列表
+{% endblock content-title %}
+
+{% block content %}
+<a href="/questionnaireAdd/">
+    <button type="button" class="btn btn-primary">
+      添加
+    </button>
+</a>
+<p></p>
+<table class="table table-bordered">
+    <thead>
+    <th>调查问卷名称</th>
+    <th>调查问卷班级</th>
+    <th>参与人数</th>
+    <th>问卷选项</th>
+    <th>调查地址</th>
+    <th>查看评分</th>
+    <th>操作</th>
+    </thead>
+    <tbody>
+    {% for Questionnaire in Questionnaire_list %}
+        <tr>
+            <td>{{ Questionnaire.name }}</td>
+            <td>{{ Questionnaire.cls.name }}</td>
+            <td>{{ Questionnaire.cls.student_set.count }}</td>
+            <td><a href="/questionnaireEditor/?QuestionnaireId={{ Questionnaire.id }}">编辑问卷</a></td>
+            <td></td>
+            <td>查看评分</td>
+            <td>删除</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

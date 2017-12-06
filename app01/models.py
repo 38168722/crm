@@ -39,7 +39,7 @@ class Questionnaire(models.Model):
 
     name = models.CharField(max_length=32)
     creator = models.ForeignKey(verbose_name="创建者",to=UserInfo)
-    cls = models.ForeignKey(verbose_name="调查问卷",to=ClassList)
+    cls = models.ForeignKey(verbose_name="所属班级",to=ClassList)
 
     class Meta:
         verbose_name_plural="调查问卷表"
@@ -51,9 +51,9 @@ class Question(models.Model):
 
     name = models.CharField(max_length=100)
     question_types=(
-        (1,"打分"),
+        (1,"打分(1-10分)"),
         (2,"单选"),
-        (3,"评论"),
+        (3,"建议"),
     )
     type = models.IntegerField(choices=question_types,verbose_name="问题类型")
     Questionnaire=models.ForeignKey(verbose_name="调查问卷",to=Questionnaire)

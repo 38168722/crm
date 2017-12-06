@@ -123,4 +123,24 @@ def mobileajax_validate(request):
     return HttpResponse("error")
 
 def index(request):
-    return render(request,"index.html")
+    Questionnaire_list = models.Questionnaire.objects.all()
+    return render(request,"index.html",{"Questionnaire_list":Questionnaire_list})
+
+def questionEditor(request):
+    QuestionnaireId=request.GET.get("QuestionnaireId")
+    request.session["Questionnaire_Id"]=QuestionnaireId
+    types = models.Question.question_types
+    return render(request,"questionEditor.html",{"types":types,"QuestionnaireId":QuestionnaireId})
+
+def questionnaireAdd(request):
+
+    if request.method =="POST":
+        QuestionnaireName=request.POST.get("QuestionnaireName")
+        userid=request.POST.get("userid")
+        classid=request.POST.get("classid")
+        models.Questionnaire.objects.create(name=QuestionnaireName,creator_id=userid,cls_id=classid)
+        return HttpResponse("true")
+    else:
+        user_list = models.UserInfo.objects.all()
+        class_list = models.ClassList.objects.all()
+        return render(request,"questionnaireAdd.html",{"user_list":user_list,"class_list":class_list})

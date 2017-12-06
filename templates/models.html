@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <META http-equiv=Content-Type content="text/html; charset=gb2312">
+    <title>
+    {% block title %}
+        文章管理
+    {% endblock %}
+    </title>
+    <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="/static/bootstrap3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap-theme.min.css">
+    <script type="application/javascript" src="/static/jquery.cookie.js"></script>
+
+    <!--  引入文本编辑器js -->
+    <script charset="utf-8" src="/static/editor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/static/editor/lang/zh-CN.js"></script>
+
+
+</head>
+<body>
+
+{% block motai %}
+
+{% endblock %}
+
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">CRM 管理系统</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!--
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      -->
+      <ul class="nav navbar-nav navbar-right">
+          {% if request.session.username %}
+              <li><a href="#"><span class="glyphicon glyphicon-user" style="color: white"></span>{{ request.session.username }}</a></li>
+              <li><a href="/index/"><span class="glyphicon glyphicon-home" style="color:white">主页</span></a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-off" style="color:white"></span>注销</a></li>
+          {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-primary">
+              <div class="panel-heading text-center">
+                <h3 class="panel-title">操作</h3>
+              </div>
+              <div class="panel-body text-center">
+                {% block permissionManager%}
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                      <a href="/blog/{{ request.session.username }}/manager/" style="color: white;text-decoration: none">权限管理</a>
+                  </div>
+                </div>
+                {% endblock permissionManager %}
+
+                {% block clientManager %}
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <a href="/blog/{{ request.session.username }}/manager/?action=category_manager" style="color: black;text-decoration: none">客户管理</a>
+                  </div>
+                </div>
+               {% endblock clientManager %}
+
+                {% block schoolManager %}
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <a href="/blog/{{ request.session.username }}/manager/?action=tag_manager" style="color: black;text-decoration: none">校区管理</a>
+                  </div>
+                </div>
+                {% endblock schoolManager %}
+
+              {% block employeeManager %}
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <a href="/blog/{{ request.session.username }}/manager/?action=tag_manager" style="color: black;text-decoration: none">校区管理</a>
+                  </div>
+                 <div class="panel-body">
+                        <p>学校列表</p>
+                        <p>课程列表</p>
+                        <p>开班列表</p>
+                        <p>学生列表</p>
+                        <p>上课记录表</p>
+                        <p>学生学习记录表</p>
+                        <p><a href="/index/">调查问卷列表</a></p>
+                  </div>
+                </div>
+                {% endblock employeeManager %}
+
+            <!--
+                 <div class="panel panel-default">
+                  <div class="panel-heading">
+                        用户管理
+                  </div>
+                 </div>
+             -->
+              </div>
+            </div>
+        </div>
+
+        <!-- 主体部分 -->
+        <div class="col-md-10">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  {% block content-title %}
+                        Panel title
+                  {% endblock content-title %}
+                </h3>
+              </div>
+              <div class="panel-body">
+                  {% block content %}
+                        Panel content
+                  {% endblock %}
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{% block js %}
+
+{% endblock js %}
+
+{% block css %}
+
+{% endblock css %}
+</html>

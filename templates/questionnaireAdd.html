@@ -1,0 +1,70 @@
+{% extends "models.html" %}
+
+{% block content-title %}
+    添加问卷表
+{% endblock content-title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10">
+<form class="form-horizontal">
+  <div class="form-group">
+    <label for="Questionnaire" class="col-sm-2 control-label">问卷名称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="Questionnaire" placeholder="问卷名称" name="QuestionnaireName">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">创建者:</label>
+    <div class="col-sm-10">
+     <select class="form-control" name="userid">
+         {% for item in user_list %}
+          <option value="{{ item.id }}">{{ item.name }}</option>
+         {% endfor %}
+        </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">所属班级:</label>
+    <div class="col-sm-10">
+     <select class="form-control" name="classid">
+         {% for item in class_list %}
+          <option value="{{ item.id }}">{{ item.name }}</option>
+         {% endfor %}
+        </select>
+    </div>
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-offset-4 col-md-8">
+    <button type="button" class="btn btn-success addQuestionnaire">添加</button>&nbsp;&nbsp;<button class="btn btn-primary">保存</button>
+</div>
+</form>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script type="application/javascript">
+
+$(".addQuestionnaire").click(function () {
+
+$.ajax({
+   type: "POST",
+   url: "/questionnaireAdd/",
+   data: $("form").serialize(),
+   success: function(data){
+     console.log( "Data Saved: " + data );
+     if(data=="true"){
+        location.href="/index/"
+     }
+   }
+});
+
+});
+
+
+
+</script>
+{% endblock js %}

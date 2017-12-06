@@ -2,6 +2,8 @@ from django.test import TestCase
 
 # Create your tests here.
 
+print("hello world")
+
 class Foo(object):
     def __init__(self,data):
         self.data=data
