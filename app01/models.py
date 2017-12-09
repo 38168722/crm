@@ -9,7 +9,6 @@ class UserInfo(models.Model):
 
     class Meta:
         verbose_name_plural="用户信息表"
-
     def __str__(self):
         return self.name
 
@@ -82,6 +81,7 @@ class Answer(models.Model):
     question = models.ForeignKey(verbose_name="所属问题",to=Question)
     val = models.IntegerField(null=True,blank=True,verbose_name="评分值")
     content = models.CharField(max_length=255,null=True,blank=True,verbose_name="评论")
+    option = models.ForeignKey(verbose_name="选项",to=Option,null=True,blank=True)
 
     class Meta:
         verbose_name_plural="回复表"

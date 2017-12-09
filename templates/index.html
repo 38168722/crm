@@ -27,8 +27,8 @@
             <td>{{ Questionnaire.name }}</td>
             <td>{{ Questionnaire.cls.name }}</td>
             <td>{{ Questionnaire.cls.student_set.count }}</td>
-            <td><a href="/questionnaireEditor/?QuestionnaireId={{ Questionnaire.id }}">编辑问卷</a></td>
-            <td></td>
+            <td><a href="/question/{{ Questionnaire.id }}/">编辑问卷</a></td>
+            <td><a href="/stu/quest/{{ Questionnaire.id }}/{{ Questionnaire.cls.id }}/">/stu/quest/{{ Questionnaire.id }}/{{ Questionnaire.cls.id }}/</a></td>
             <td>查看评分</td>
             <td>删除</td>
         </tr>

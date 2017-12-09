@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <META http-equiv=Content-Type content="text/html; charset=gb2312">
+    <title>学生登陆</title>
+    <script type="application/javascript" src="/static/jquery-3.2.1.min.js"></script>
+    <script type="application/javascript" src="/static/bootstrap3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap3/css/bootstrap-theme.min.css">
+</head>
+<body>
+<div align="center">
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>登陆</p>
+        <p>用户: <input type="text" name="student_name"></p>
+        <p>密码: <input type="password" name="student_pass"></p>
+        <p><button type="button">登陆</button></p>
+    </form>
+</div>
+</body>
+<script type="application/javascript" src="/static/jquery.cookie.js"></script>
+<script type="application/javascript">
+
+    $("button").click(function (){
+        $.ajax({
+            url:"/student_login/",
+            headers:{"X-CSRFToken":$.cookie('csrftoken')},
+            data:$("form").serialize(),
+            type:"post",
+            success:function(data){
+                console.log(data)
+                if(data=="true"){
+                    location.href="/index/"
+                }
+            }
+        })
+    });
+
+</script>
+</html>

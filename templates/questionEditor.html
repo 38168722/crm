@@ -6,8 +6,25 @@
 
 {% block css %}
 <style type="text/css">
+.hide{
+    display: none;
+}
+ol {
+    padding: 0;
+    list-style: none;
+    counter-reset: sectioncounter
+}
 
+ol > li:before {
+    content: '问题' counter(sectioncounter) ':';
+    counter-increment: sectioncounter;
+    font-size: 18px;
+    color: #d4d4d4;
+}
 
+ol > li:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
 </style>
 
 {% endblock css %}
@@ -15,45 +32,101 @@
 {% block content %}
     <div class="row">
         <div class="col-md-offset-8 col-md-4 text-right">
-            <button class="btn btn-success">添加</button>&nbsp;&nbsp;<button class="btn btn-primary">保存</button>
+            <button class="btn btn-success addProblem">添加</button>&nbsp;&nbsp;<button class="btn btn-primary updateProblem">保存</button>
         </div>
     </div>
-    <div class="problemBody" >
-        <div class="row problem" style="margin-top: 35px">
-            <div class="col-md-10 ">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">问题:</label>
-                        <div class="col-sm-10">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                                <div class="col-sm-2">
-                                    <span>X</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-2 control-label">类型:</label>
-                        <div class="col-sm-3">
-                            <select class="form-control">
-                                {% for item in types %}
-                                    <option value="{{ item.0 }}">{{ item.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+
+<form action="">
+<div class="problemBody" >
+<div class="problem">
+<ol class="problem-Body">
+{% for item in form_list %}
+    <li problemId="{{ item.obj.id }}">{{ item.form.name }} <span class="glyphicon glyphicon-remove deloption pull-right"></span>
+    <div class="option-group">
+    <p>类型: {{ item.form.type }}<a class="addOption {{ item.option_class }}">添加</a></p>
+    {% for v in item.options %}
+        <p class="optionId">名称: &nbsp;{{ v.form.name }} 分值:&nbsp;{{ v.form.score }}<span class="glyphicon glyphicon-remove deloption"></span>
+            <input type="hidden" optionId="optionId" value="{{ v.obj.id }}">
+        </p>
+    {% endfor %}
     </div>
+    <p><hr></p>
+    </li>
+{% endfor %}
+</ol>
+</div>
+</div>
+    <input type="hidden" name="Questionnaire_id" value="{{ Questionnaire_id }}">
+</form>
+
 {% endblock content %}
 
 {% block js %}
 <script type="application/javascript">
 
+$(".problem").on("change","[name=type]",function () {
+    if(this.value==2){
+      $(this).next().removeClass("hide")
+    }else{
+      $(this).parent().nextAll().empty();
+      $(this).next().addClass("hide")
+    }
+});
+
+//声明选项的id让自增
+opid=$("[optionid=optionId]").length;
+$(".problem").on("click",".addOption",function () {
+     if(opid==0){
+         opid=1;
+     }
+     $(this).parent().parent().append('<p class="optionId">名称: &nbsp;<input type="hidden" optionId="optionId" value='+opid+'><input type="text" name="name"maxlength="32" required="" id="id_name" optionname="option"> 分值:&nbsp;<input type="number" name="score" required="" id="id_score"><span class="glyphicon glyphicon-remove deloption"></span></p>')
+     opid=opid+1
+});
+
+$(".problem").on("click",".deloption",function () {
+     $(this).parent().remove();
+});
+
+//在现有问题id上加1
+$(".addProblem").click(function (){
+    var pid=parseInt($("li").last().attr("problemid"))+1;
+    $(".problem-Body").append('<li problemid='+pid+'><input type="text" name="name" maxlength="100" required="" id="id_name" questionname="name"><span class="glyphicon glyphicon-remove deloption pull-right"></span><div class="option-group"><p>类型: <select name="type" questiontype="type" required="" id="id_type"><option value="1" selected="">打分(1-10分)</option><option value="2">单选</option><option value="3">建议</option></select><a class="addOption hide">添加</a></p></div>'+
+'<p></p><hr><p></p></li>');
+});
+
+$(".updateProblem").click(function () {
+
+//拿到问题列表中所有的值
+var result=[];
+$("ol li").each(function(k,v){
+    question_obj={};
+    question_obj["Questionnaire_id"]=$("[name=Questionnaire_id]").val();
+    question_obj["question_id"]=$(v).attr("problemId");
+	question_obj["name"]=$(v).find("[name=name]").val();
+    question_obj["type"]=$(v).find("[name=type]").val();
+    var options=$(v).find("[optionname=option]");
+    var scores=$(v).find("[id=id_score]");
+    var optionid=$(v).find("[optionid=optionId]");
+
+    question_obj["options"]=[];
+    for(var i=0;i<options.length;i++){
+    	question_obj["options"].push({"optionId":$(optionid).eq(i).val(),"optionName":$(options).eq(i).val(),"optionScore":$(scores).eq(i).val()})
+    }
+    result.push(question_obj)
+});
+
+
+    $.ajax({
+        type:"POST",
+        dataType:"json",
+        headers:{"X-CSRFToken":$.cookie('csrftoken')},
+        url:"/questionnaireAdd/",
+        data:JSON.stringify({"result":result}),
+        success:function (data) {
+            console.log(data)
+        }
+    });
+})
 
 </script>
 {% endblock js %}

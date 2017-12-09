@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <style>
+        ul{
+            list-style-type: none;
+        }
+        ul li{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form method="post" action="/stu/quest/{{ qn_id }}/{{ classId }}/" novalidate>
+            {% csrf_token %}
+            {% for fd in form %}
+                <div>
+                    <p>{{ fd.label }} {{ fd.errors.0 }}</p>
+                       {{ fd }}
+                </div>
+            {% endfor %}
+            <input type="submit" value="提交">
+        </form>
+    </div>
+</body>
+</html>

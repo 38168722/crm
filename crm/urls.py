@@ -27,6 +27,9 @@ from app01.views import home
 
 
 urlpatterns = [
+    url(r'^stu/quest/(\d+)/(\d+)/$',views.score),
+    url(r'^student_login/$', views.student_login),
+    url(r'^question/(\d+)/$', views.question),
     url(r'^admin/',admin.site.urls),
     url(r'^login/', views.login),
     url(r'^index/',views.index),

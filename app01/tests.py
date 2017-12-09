@@ -2,22 +2,10 @@ from django.test import TestCase
 
 # Create your tests here.
 
-print("hello world")
 
-class Foo(object):
-    def __init__(self,data):
-        self.data=data
+def foo(x,y,**kwargs):
+     print(x,y)
+     print(kwargs) #{'c': 3, 'd': 4, 'f': 6} 吧多余的元素以字典的形式返回了
+     print(*kwargs) #输出c d f ，就是把字典打散了
 
-    def __iter__(self):
-        for item in self.data:
-            yield item
-
-user_list=[
-    {"id":1,"name":"alex","age":19},
-    {"id":2,"name":"jim","age":29}
-]
-
-obj = Foo(user_list)
-
-for item in obj:
-    print(item)
+foo(1,y=2,c=3,d=4,f=6)
